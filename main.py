@@ -26,19 +26,18 @@ def recognize(service: str):
     file = request.files.get('voice')
     if file is None:
         return make_response(jsonify({'error': 'Missing file to recognize'}), 400)
-    
-    with sr.AudioFile(file) as source:
-        audio = recognizer.record(source)
-    
-    if audio.frame_data is None:
-        return make_response(jsonify({'error': 'Couldn\'t process this audio'}), 400)
-
-    open_ai_key = get_openai_key()
-    
-    fn_service = services[service]
-    result = ''
-
     try:
+        with sr.AudioFile(file) as source:
+            audio = recognizer.record(source)
+        
+        if audio.frame_data is None:
+            return make_response(jsonify({'error': 'Couldn\'t process this audio'}), 400)
+
+        open_ai_key = get_openai_key()
+        
+        fn_service = services[service]
+        result = ''
+
         if service == 'openai':
             result = fn_service(audio, api_key=open_ai_key)
         else:

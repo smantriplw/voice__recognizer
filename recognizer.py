@@ -6,6 +6,7 @@ recognizer = sr.Recognizer()
 services = {
     'openai': recognizer.recognize_whisper_api,
     'whisper': recognizer.recognize_whisper,
+    'google': recognizer.recognize_google,
 }
 
 def get_openai_key() -> str:
