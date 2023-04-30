@@ -2,6 +2,7 @@ from os import environ
 from flask import Flask, jsonify, Response, make_response, request
 from recognizer import services, recognizer, get_openai_key, sr
 from utility import get_keys
+from gevent.pywsgi import WSGIServer
 
 app = Flask(__name__)
 serverPort = environ.get('PORT', '3000')
@@ -49,4 +50,5 @@ def recognize(service: str):
     
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', int(serverPort))
+    http_server = WSGIServer(("0.0.0.0", int(serverPort)), app)
+    http_server.serve_forever()
