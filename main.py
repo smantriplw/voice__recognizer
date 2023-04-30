@@ -1,6 +1,6 @@
 from os import environ
 from flask import Flask, jsonify, Response, make_response, request
-from recognizer import services, recognizer, get_openai_key
+from recognizer import services, recognizer, get_openai_key, sr
 from utility import get_keys
 
 app = Flask(__name__)
@@ -27,14 +27,24 @@ def recognize(service: str):
     if file is None:
         return make_response(jsonify({'error': 'Missing file to recognize'}), 400)
     
-    audio = recognizer.record(file)
+    with sr.AudioFile(file) as source:
+        audio = recognizer.record(source)
+    
     if audio.frame_data is None:
         return make_response(jsonify({'error': 'Couldn\'t process this audio'}), 400)
 
     open_ai_key = get_openai_key()
     
     fn_service = services[service]
-    result = fn_service(audio, api_key=open_ai_key)
+    result = ''
+
+    try:
+        if service == 'openai':
+            result = fn_service(audio, api_key=open_ai_key)
+        else:
+            result = fn_service(audio)
+    except Exception as error:
+        return make_response(jsonify({'error': str(error)}), 500)
 
     return jsonify({'error': None, 'data': result})
     
