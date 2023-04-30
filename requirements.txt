@@ -1,0 +1,4 @@
+openai==0.27.5
+flask
+openai-whisper @ git+https://github.com/openai/whisper.git@c09a7ae299c4c34c5839a76380ae407e7d785914
+json-store @ git+https://github.com/brainsik/json-store@d71da317ab0a55ac29cfc751461f76d416cc52c7
