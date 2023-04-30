@@ -4,3 +4,4 @@ openai-whisper @ git+https://github.com/openai/whisper.git@c09a7ae299c4c34c5839a
 json-store @ git+https://github.com/brainsik/json-store@d71da317ab0a55ac29cfc751461f76d416cc52c7
 SpeechRecognition==3.10.0
 gevent==22.10.2
+soundfile==0.12.1
